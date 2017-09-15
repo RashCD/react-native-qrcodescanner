@@ -5,14 +5,21 @@ import {
   StyleSheet,
   TouchableOpacity,
   View,
+  Dimensions,
 } from 'react-native';
 import Camera from 'react-native-camera';
 
+var {screenHeight, screenWidth} = Dimensions.get('window');
+
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    // flex: 1,
+    width: screenWidth,
+    height: 500,
   },
   preview: {
+    // width: screenWidth,
+    // height: (screenHeight / 2),
     flex: 1,
     justifyContent: 'flex-end',
     alignItems: 'center',
@@ -62,8 +69,9 @@ export default class Example extends React.Component {
 
     this.state = {
       camera: {
-        aspect: Camera.constants.Aspect.fill,
+        aspect: Camera.constants.Aspect.stretch,
         captureTarget: Camera.constants.CaptureTarget.cameraRoll,
+        captureQuality: Camera.constants.CaptureQuality.low,
         type: Camera.constants.Type.back,
         orientation: Camera.constants.Orientation.auto,
         flashMode: Camera.constants.FlashMode.auto,
@@ -71,6 +79,8 @@ export default class Example extends React.Component {
       isRecording: false
     };
   }
+
+  readQR(e) {console.log('e',e)}
 
   takePicture = () => {
     if (this.camera) {
@@ -186,6 +196,7 @@ export default class Example extends React.Component {
           onZoomChanged={() => {}}
           defaultTouchToFocus
           mirrorImage={false}
+          onBarCodeRead={this.readQR.bind(this)}
         />
         <View style={[styles.overlay, styles.topOverlay]}>
           <TouchableOpacity
